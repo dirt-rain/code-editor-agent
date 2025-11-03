@@ -5,6 +5,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { RULE_CACHE_FILE_PATH, RuleCacheEntry } from "..";
 import { loadConfig } from "../loadConfig";
 import { cjs } from "../utils/cjs";
+import { normalizeToStringArray } from "../utils/normalizeToStringArray";
 
 export async function generate(force = false) {
   if (!existsSync(RULE_CACHE_FILE_PATH) && !force) {
@@ -26,12 +27,43 @@ export async function generate(force = false) {
 
   for (const ruleFile of ruleFiles) {
     const { attributes } = cjs(fm)(await readFile(ruleFile, "utf-8"));
-    if (!("patterns" in (attributes as Record<string, unknown>))) {
+    const attrs = attributes as Record<string, unknown>;
+
+    if (!("patterns" in attrs)) {
       throw new Error(`Rule file ${ruleFile} is missing 'patterns' attribute.`);
     }
+
+    // Validate priority
+    if ("priority" in attrs && typeof attrs.priority !== "number") {
+      throw new Error(`Rule file ${ruleFile}: 'priority' must be a number.`);
+    }
+
+    // Validate order
+    if ("order" in attrs && typeof attrs.order !== "number") {
+      throw new Error(`Rule file ${ruleFile}: 'order' must be a number.`);
+    }
+
     const rule: RuleCacheEntry = {
-      patterns: (attributes as Record<"patterns", string | string[]>).patterns,
+      patterns: attrs.patterns as string | string[],
       path: ruleFile,
+      ignorePatterns: normalizeToStringArray(
+        attrs.ignorePatterns,
+        `Rule file ${ruleFile}: 'ignorePatterns' must be a string or array of strings.`
+      ),
+      priority: attrs.priority as number | undefined,
+      tags: normalizeToStringArray(
+        attrs.tags,
+        `Rule file ${ruleFile}: 'tags' must be a string or array of strings.`
+      ),
+      referencesIfTop: normalizeToStringArray(
+        attrs.referencesIfTop,
+        `Rule file ${ruleFile}: 'referencesIfTop' must be a string or array of strings.`
+      ),
+      referencesAlways: normalizeToStringArray(
+        attrs.referencesAlways,
+        `Rule file ${ruleFile}: 'referencesAlways' must be a string or array of strings.`
+      ),
+      order: attrs.order as number | undefined,
     };
     intermediate.push({ comparator: JSON.stringify(rule), result: rule });
   }

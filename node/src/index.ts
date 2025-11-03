@@ -7,6 +7,12 @@ import { load } from "./commands/load";
 export interface RuleCacheEntry {
   patterns: string | string[];
   path: string;
+  ignorePatterns: string[];
+  priority?: number;
+  tags: string[];
+  referencesIfTop: string[];
+  referencesAlways: string[];
+  order?: number;
 }
 
 export const RULE_CACHE_FILE_PATH =

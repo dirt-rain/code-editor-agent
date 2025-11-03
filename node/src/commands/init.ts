@@ -46,12 +46,12 @@ The file should be in Markdown format with Front Matter (YAML) at the beginning.
 The Front Matter should contain the following fields:
 
 - \`patterns\` (required): String or array of strings of glob patterns to match files to apply this rule to.
-- \`ignorePatterns\` (optional, not implemented yet): String or array of strings of glob patterns to ignore files to apply this rule to. File with path matching both patterns will be ignored.
-- \`priority\` (optional, but highly recommended, not implemented yet): Higher number means higher priority. If total rules loaded is more than its priority, it will be skipped. Infinity if omitted.
-- \`tags\` (optional, not implemented yet): String or array of strings of tags for reference this rule in other files.
-- \`referencesIfTop\` (optional, not implemented yet): String or array of strings of tags of other rules to reference. Used only if this rule is the top-level rule which path matches patterns.
-- \`referencesAlways\` (optional, not implemented yet): String or array of strings of tags of other rules to reference. Used even if this rule is referenced by other rules.
-- \`order\` (optional, not implemented yet): Number to sort the rules. Used to determine the order of the rules.
+- \`ignorePatterns\` (optional): String or array of strings of glob patterns to ignore files to apply this rule to. File with path matching both patterns will be ignored.
+- \`priority\` (optional, but highly recommended): Higher number means higher priority. If total rules loaded is more than its priority, it will be skipped. Infinity if omitted.
+- \`tags\` (optional): String or array of strings of tags for reference this rule in other files.
+- \`referencesIfTop\` (optional): String or array of strings of tags of other rules to reference. Used only if this rule is the top-level rule which path matches patterns.
+- \`referencesAlways\` (optional): String or array of strings of tags of other rules to reference. Used even if this rule is referenced by other rules.
+- \`order\` (optional): Number to sort the rules. Lower number means it appears earlier in the output. Infinity if omitted.
 
 The body of the file should contain the additional context for the file-specific rules.
 
@@ -82,7 +82,6 @@ And agent is going to edit \`src/lib/Button.tsx\` file, then:
 - Only modify this file if absolutely necessary, and after careful consideration. Changes here can affect how the agent applies rules, so make sure the modification is truly needed.
 `
   );
-  // TODO: implement tags, referencesIfTop, referencesAlways, order
 
   // .claude/agents/code-editor.md
   await mkdir(".claude/agents", { recursive: true });
