@@ -1,0 +1,19 @@
+# Rule A: TypeScript files
+
+This rule applies to all TypeScript files and always references common-rules.
+
+# Rule B: Common rules
+
+This rule is referenced by other rules via the `common-rules` tag.
+
+# Rule C: References only when top-level
+
+This rule references `top-only-rules` only when it's a top-level match.
+
+# Rule D: Top-only rules
+
+This rule is only loaded when referenced by a top-level rule's `referencesIfTop`.
+
+* * *
+
+End of additional context for tmp/test-file.ts. Continue.

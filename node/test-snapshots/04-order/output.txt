@@ -1,0 +1,15 @@
+# First rule
+
+This rule has order 1 and should appear first in the output.
+
+# Second rule
+
+This rule has order 2 and should appear second in the output.
+
+# Third rule
+
+This rule has order 3 and should appear third in the output.
+
+* * *
+
+End of additional context for tmp/test-file.ts. Continue.

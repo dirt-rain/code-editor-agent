@@ -1,0 +1,11 @@
+# High priority rule
+
+This rule has priority 10, so it will be kept unless there are more than 10 rules to load.
+
+# Medium priority rule
+
+This rule has priority 5, so it will be skipped if there are more than 5 rules to load.
+
+* * *
+
+End of additional context for tmp/test-file.ts. Continue.

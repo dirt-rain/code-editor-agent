@@ -1,0 +1,8 @@
+# Basic rule with ignorePatterns
+
+This rule matches all TypeScript files but ignores files named `ignored.ts`.
+
+* * *
+
+End of additional context for tmp/test-file.ts. Continue.
+No additional context found for tmp/ignored.ts. Continue.

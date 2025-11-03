@@ -1,0 +1,11 @@
+# Rule 1: Combined features
+
+This rule combines priority, order, tags, and references.
+
+# Rule 2: Shared rule
+
+This is a shared rule referenced by other rules.
+
+* * *
+
+End of additional context for tmp/test-file.ts. Continue.

@@ -4,6 +4,10 @@
       "**/*.code-editor-agent.md",
       "**/code-editor-agent.md"
     ],
-    "path": "RENAME-ME.code-editor-agent.md"
+    "path": "RENAME-ME.code-editor-agent.md",
+    "ignorePatterns": [],
+    "tags": [],
+    "referencesIfTop": [],
+    "referencesAlways": []
   }
 ]
