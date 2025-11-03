@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "npm install && sh test.sh"
+  },
+  "dependencies": {
+    "code-editor-agent": "file:../dist"
+  },
+  "devDependencies": {
+    "tsx": "^4.20.6"
+  }
+}

@@ -1,0 +1,11 @@
+/node_modules
+/package-lock.json
+
+# test output
+/.claude
+/.config
+/RENAME-ME.code-editor-agent.md
+/output.txt
+
+# test temporary files
+/tmp

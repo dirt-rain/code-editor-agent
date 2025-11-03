@@ -1,0 +1,31 @@
+{
+  "DO NOT REMOVE private: true AS IT PREVENTS UNINTENDED PUBLISHING NON-BUILT VERSIONS!": "comment",
+  "private": true,
+  "type": "module",
+  "name": "code-editor-agent",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dirt-rain/code-editor-agent.git"
+  },
+  "bin": {
+    "code-editor-agent": "index.js"
+  },
+  "scripts": {
+    "build": "rimraf dist && tsc && package-json-minifier && cpy README.md dist",
+    "test": "npm run build && cd test && npm start",
+    "publish": "npm run build && cd dist && npm publish"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "cpy-cli": "^6.0.0",
+    "package.json-minifier": "^0.0.4",
+    "rimraf": "^6.1.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "front-matter": "^4.0.2",
+    "glob": "^11.0.3",
+    "minimatch": "^10.1.1"
+  }
+}
