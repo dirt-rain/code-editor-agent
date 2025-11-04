@@ -1,0 +1,12 @@
+[CODE-EDITOR] TypeScript editing rules
+
+* * *
+
+End of additional context for tmp/test.ts. Continue.
+[CODE-REVIEWER] TypeScript review rules
+
+[CODE-EDITOR] TypeScript editing rules
+
+* * *
+
+End of additional context for tmp/test.ts. Continue.

@@ -138,7 +138,7 @@ export async function load(agentName: string, filePath: string) {
   // Apply priority filtering:
   // For each rule (in sorted order), if totalRulesToPrint > priority, skip it.
   // Each time we skip a rule, decrement totalRulesToPrint.
-  const finalRules: RuleCacheEntry[] = [];
+  const finalRules: RuleWithDepth[] = [];
   let totalRulesToPrint = candidateRules.length;
 
   for (const rule of candidateRules) {
@@ -152,12 +152,18 @@ export async function load(agentName: string, filePath: string) {
     }
   }
 
-  // Sort final rules by [order ASC, filePath ASC] for output
+  // Sort final rules by [order ASC, agentDepth ASC, filePath ASC] for output
+  // agentDepth ASC means current agent rules appear first
   finalRules.sort((a, b) => {
     const orderA = a.order ?? Infinity;
     const orderB = b.order ?? Infinity;
     if (orderA !== orderB) {
       return orderA - orderB;
+    }
+
+    // Add agentDepth for output ordering
+    if (a.agentDepth !== b.agentDepth) {
+      return a.agentDepth - b.agentDepth;
     }
 
     return a.path.localeCompare(b.path);

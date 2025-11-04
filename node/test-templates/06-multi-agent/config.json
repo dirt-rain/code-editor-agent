@@ -1,0 +1,14 @@
+{
+  "exclude": ["./node_modules/**"],
+  "agents": {
+    "code-editor": {
+      "ruleFilePattern": "**/*.code-editor-agent.md",
+      "commandGroup": null
+    },
+    "code-reviewer": {
+      "ruleFilePattern": "**/*.code-reviewer.md",
+      "commandGroup": "reviewer",
+      "references": ["code-editor"]
+    }
+  }
+}

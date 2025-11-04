@@ -12,7 +12,7 @@ cleanup_tmp() {
 }
 
 # If test fails, comment line below to keep temporary files for inspect tmp/actual and tmp/expected
-# trap cleanup EXIT
+trap cleanup EXIT
 
 cleanup
 mkdir tmp
@@ -88,5 +88,18 @@ rm RENAME-ME.code-editor-agent.md
 npx code-editor-agent cmd generate
 npx code-editor-agent tmp/test-file.ts > output.txt
 compare_output 05-combined
+
+# 06-multi-agent
+cleanup_tmp
+cp ../test-templates/06-multi-agent/*.code-editor-agent.md tmp/
+cp ../test-templates/06-multi-agent/*.code-reviewer.md tmp/
+rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
+npx code-editor-agent cmd init
+rm RENAME-ME.code-editor-agent.md
+cp ../test-templates/06-multi-agent/config.json .config/code-editor-agent.json
+npx code-editor-agent cmd generate
+npx code-editor-agent tmp/test.ts > output.txt
+npx code-editor-agent reviewer tmp/test.ts >> output.txt
+compare_output 06-multi-agent
 
 echo "All tests passed."
