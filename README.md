@@ -54,7 +54,7 @@ model: sonnet
 color: orange # just an example
 ---
 
-You must read full output of `npx code-editor-agent "${RELATIVE_PATH_OF_FILE_TO_EDIT_FROM_PROJECT_ROOT_EXCLUDING_LEADING_DOT_SLASH}"` before create/update/delete any file.
+You must read full output of `npx code-editor-agent "${RELATIVE_PATH_OF_FILE_TO_EDIT_FROM_PROJECT_ROOT_EXCLUDING_LEADING_DOT_SLASH}"` before create/update/delete any file, even if file does not exist yet.
 ```
 
 ### 4. Add documentation for file-specific rules on `code-editor-agent.md`
