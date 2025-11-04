@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { RULE_CACHE_FILE_PATH } from "..";
-import { CONFIG_FILE_PATH, DEFAULT_CONFIG } from "../loadConfig";
+import { CONFIG_FILE_PATH, DEFAULT_RAW_CONFIG } from "../loadConfig";
 import { generate } from "./generate";
 
 export async function init() {
@@ -16,7 +16,7 @@ export async function init() {
   await mkdir(dirname(CONFIG_FILE_PATH), { recursive: true });
   await writeFile(
     CONFIG_FILE_PATH,
-    JSON.stringify(DEFAULT_CONFIG, null, 2) + "\n",
+    JSON.stringify(DEFAULT_RAW_CONFIG, null, 2) + "\n",
     "utf-8"
   );
 

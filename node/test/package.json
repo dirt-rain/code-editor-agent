@@ -2,7 +2,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "npm install && sh test.sh"
+    "start": "rm -rf node_modules && npm install && sh test.sh"
   },
   "dependencies": {
     "code-editor-agent": "file:../dist"

@@ -16,9 +16,9 @@ This should be done manually.
 **IMPORTANT RULES:**
 0. DO NOT FORGET THESE RULES EVEN ON CONTEXT COMPACTION
 1. Never edit files directly. Always use the `@code-editor` agent for file modifications.
-2. When instructing file edits, do **not** specify exact file contents.  
-   Instead, describe the file’s purpose and what it should accomplish.
-3. The `@code-editor` agent will receive extra context specific to file editing.  
+2. When instructing file edits, do **not** specify exact file contents.
+   Instead, describe the file's purpose and what it should accomplish.
+3. The `@code-editor` agent will receive extra context specific to file editing.
    It's highly specialized and only relevant for that agent — nothing you need to worry about.
 ```
 
@@ -51,7 +51,7 @@ name: code-editor
 description: For every code editing
 tools: Bash, Read, Edit, Write, Grep, Glob
 model: sonnet
-color: orange # just an example
+color: orange
 ---
 
 You must read full output of `npx code-editor-agent "${RELATIVE_PATH_OF_FILE_TO_EDIT_FROM_PROJECT_ROOT_EXCLUDING_LEADING_DOT_SLASH}"` before create/update/delete any file, even if file does not exist yet.
@@ -74,6 +74,117 @@ It will regenerate the `.claude/agents/code-editor/.cache-data.json` file.
 ### 6. Use the agent
 
 Instruct Claude Code to edit some files. It will (likely) call the agent, and the agent will load additional context from the file-specific rules.
+
+## Multi-Agent Support
+
+You can define multiple custom agents through `.config/code-editor-agent.json`.
+
+### Configuration Structure
+
+The configuration uses **commandGroup** to organize agents:
+- Agents with `commandGroup: null` are invoked as: `npx code-editor-agent <file>`
+- Agents with a commandGroup are invoked as: `npx code-editor-agent <group> <file>`
+
+Agents can **reference** other agents to include their rules.
+
+### Example Configuration
+
+Edit `.config/code-editor-agent.json`:
+
+```jsonc
+{
+  "exclude": ["./node_modules/**"],
+  "agents": {
+    // Default agent (commandGroup: null)
+    "code-editor": {
+      "ruleFilePattern": "**/*.code-editor-agent.md",
+      "commandGroup": null
+    },
+
+    // Reviewer agent that also loads code-editor rules
+    "code-reviewer": {
+      "ruleFilePattern": "**/*.code-reviewer.md",
+      "commandGroup": "reviewer",
+      "references": ["code-editor"]  // Include code-editor rules too!
+    },
+
+    // Test generator
+    "test-generator": {
+      "ruleFilePattern": "**/*.test-gen.md",
+      "commandGroup": "test",
+      "references": ["code-editor"]
+    }
+  }
+}
+```
+
+### Usage
+
+```bash
+# Use default agent (commandGroup: null)
+npx code-editor-agent src/main.ts
+
+# Use reviewer agent (loads code-reviewer + code-editor rules)
+npx code-editor-agent reviewer src/main.ts
+
+# Use test generator
+npx code-editor-agent test src/main.ts
+```
+
+### Creating Rule Files
+
+Create rule files matching each agent's `ruleFilePattern`:
+
+**typescript.code-editor-agent.md:**
+```markdown
+---
+patterns: "**/*.ts"
+priority: 10
+---
+
+For TypeScript files:
+- Use strict type checking
+- Prefer interfaces over types
+- Use async/await over raw Promises
+```
+
+**review.code-reviewer.md:**
+```markdown
+---
+patterns: "**/*.ts"
+priority: 10
+---
+
+When reviewing TypeScript code:
+- Check for proper type annotations
+- Ensure no 'any' types without justification
+- Verify error handling
+- Look for security issues
+```
+
+After creating rule files, regenerate caches:
+
+```bash
+npx code-editor-agent cmd generate
+```
+
+### Creating Claude Code Agents
+
+Create `.claude/agents/code-reviewer.md`:
+
+```markdown
+---
+name: code-reviewer
+description: Review code for quality and security
+tools: Bash, Read, Grep, Glob
+model: sonnet
+color: red
+---
+
+You must read full output of `npx code-editor-agent reviewer "${FILE_PATH}"` before reviewing the file.
+```
+
+**Note:** The CLI uses the commandGroup ("reviewer"), not the agent name ("code-reviewer").
 
 ## Development and Contributing
 

@@ -12,7 +12,7 @@ cleanup_tmp() {
 }
 
 # If test fails, comment line below to keep temporary files for inspect tmp/actual and tmp/expected
-trap cleanup EXIT
+# trap cleanup EXIT
 
 cleanup
 mkdir tmp
