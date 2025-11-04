@@ -8,6 +8,13 @@ import (
 	"github.com/dirt-rain/code-editor-agent/config"
 )
 
+// Version information (set via ldflags during build)
+var (
+	version = "dev"
+	commit  = "unknown"
+	date    = "unknown"
+)
+
 func findAgentByCommandGroup(group *string) (string, error) {
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -32,6 +39,12 @@ func findAgentByCommandGroup(group *string) (string, error) {
 
 func main() {
 	args := os.Args[1:]
+
+	// Handle version flag
+	if len(args) == 1 && (args[0] == "--version" || args[0] == "-v") {
+		fmt.Printf("code-editor-agent version %s (commit: %s, built: %s)\n", version, commit, date)
+		return
+	}
 
 	if len(args) == 1 {
 		// code-editor-agent <file-path>
