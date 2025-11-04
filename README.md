@@ -35,7 +35,7 @@ It will create:
 - `RENAME-ME.code-editor-agent.md` file which is just an example, but may useful for you.
   - Check its contents to see how to write file-specific rules.
   - Feel free to move it to a more suitable location!
-- `.config/code-editor-agent.json` file with default settings.
+- `.config/code-editor-agent.jsonc` file with default settings.
   - It just excludes `node_modules` directory by default.
 - `.claude/agents/code-editor/.cache-data.json` which is required for tool called by agent.
   - This cache file is designed with version control in mind. Feel free to version-control it!
@@ -77,7 +77,7 @@ Instruct Claude Code to edit some files. It will (likely) call the agent, and th
 
 ## Multi-Agent Support
 
-You can define multiple custom agents through `.config/code-editor-agent.json`.
+You can define multiple custom agents through `.config/code-editor-agent.jsonc`.
 
 ### Configuration Structure
 
@@ -89,31 +89,24 @@ Agents can **reference** other agents to include their rules.
 
 ### Example Configuration
 
-Edit `.config/code-editor-agent.json`:
+Edit `.config/code-editor-agent.jsonc`:
 
 ```jsonc
 {
   "exclude": ["./node_modules/**"],
   "agents": {
-    // Default agent (commandGroup: null)
+    // Default agent
     "code-editor": {
       "ruleFilePattern": "**/*.code-editor-agent.md",
-      "commandGroup": null
+      "commandGroup": null, // usage: code-editor-agent <path>
     },
 
     // Reviewer agent that also loads code-editor rules
     "code-reviewer": {
       "ruleFilePattern": "**/*.code-reviewer.md",
-      "commandGroup": "reviewer",
+      "commandGroup": "reviewer", // usage: code-editor-agent reviewer <path>
       "references": ["code-editor"]  // Include code-editor rules too!
     },
-
-    // Test generator
-    "test-generator": {
-      "ruleFilePattern": "**/*.test-gen.md",
-      "commandGroup": "test",
-      "references": ["code-editor"]
-    }
   }
 }
 ```
@@ -126,9 +119,6 @@ npx code-editor-agent src/main.ts
 
 # Use reviewer agent (loads code-reviewer + code-editor rules)
 npx code-editor-agent reviewer src/main.ts
-
-# Use test generator
-npx code-editor-agent test src/main.ts
 ```
 
 ### Creating Rule Files

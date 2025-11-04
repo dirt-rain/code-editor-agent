@@ -1,0 +1,18 @@
+{
+  "exclude": ["./node_modules/**"],
+  "agents": {
+    // Default agent: code-editor
+    "code-editor": {
+      "ruleFilePattern": "**/*.code-editor-agent.md",
+      "commandGroup": null,
+    },
+    // You can add more agents like this:
+    // "code-reviewer": {
+    //   "ruleFilePattern": "**/*.code-reviewer.md",
+    //   "commandGroup": "reviewer",
+    //   "references": ["code-editor"],
+    // },
+    // You need to add instructions like you manually did in `CLAUDE.md`,
+    // and create a file like `.claude/agents/code-reviewer.md`.
+  },
+}

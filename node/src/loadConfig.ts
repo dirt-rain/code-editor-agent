@@ -12,7 +12,7 @@ export interface Config {
   agents: Record<string, AgentConfig>;
 }
 
-export const CONFIG_FILE_PATH = ".config/code-editor-agent.json";
+export const CONFIG_FILE_PATH = ".config/code-editor-agent.jsonc";
 
 export const DEFAULT_RAW_CONFIG = {
   exclude: ["./node_modules/**"],
@@ -40,7 +40,7 @@ export async function loadConfig(): Promise<Config> {
 
   if (errors.length > 0) {
     throw new Error(
-      `Failed to parse .config/code-editor-agent.json: ${errors
+      `Failed to parse .config/code-editor-agent.jsonc: ${errors
         .map((e) => jsonc.printParseErrorCode(e.error))
         .join(", ")}`
     );
@@ -55,7 +55,7 @@ export async function loadConfig(): Promise<Config> {
       json.exclude.some((item: unknown) => typeof item !== "string")
     ) {
       throw new Error(
-        "`.config/code-editor-agent.json` 'exclude' property must be an array of strings."
+        "`.config/code-editor-agent.jsonc` 'exclude' property must be an array of strings."
       );
     }
     result.exclude = json.exclude;
@@ -69,7 +69,7 @@ export async function loadConfig(): Promise<Config> {
       Array.isArray(json.agents)
     ) {
       throw new Error(
-        "`.config/code-editor-agent.json` 'agents' property must be an object."
+        "`.config/code-editor-agent.jsonc` 'agents' property must be an object."
       );
     }
 

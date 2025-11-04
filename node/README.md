@@ -35,7 +35,7 @@ It will create:
 - `RENAME-ME.code-editor-agent.md` file which is just an example, but may useful for you.
   - Check its contents to see how to write file-specific rules.
   - Feel free to move it to a more suitable location!
-- `.config/code-editor-agent.json` file with default settings.
+- `.config/code-editor-agent.jsonc` file with default settings.
   - It just excludes `node_modules` directory by default.
 - `.claude/agents/code-editor/.cache-data.json` which is required for tool called by agent.
   - This cache file is designed with version control in mind. Feel free to version-control it!

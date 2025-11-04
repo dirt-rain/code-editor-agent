@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
 import { RULE_CACHE_FILE_PATH } from "..";
-import { CONFIG_FILE_PATH, DEFAULT_RAW_CONFIG } from "../loadConfig";
+import { CONFIG_FILE_PATH } from "../loadConfig";
 import { generate } from "./generate";
 
 export async function init() {
@@ -16,7 +16,25 @@ export async function init() {
   await mkdir(dirname(CONFIG_FILE_PATH), { recursive: true });
   await writeFile(
     CONFIG_FILE_PATH,
-    JSON.stringify(DEFAULT_RAW_CONFIG, null, 2) + "\n",
+    `{
+  "exclude": ["./node_modules/**"],
+  "agents": {
+    // Default agent: code-editor
+    "code-editor": {
+      "ruleFilePattern": "**/*.code-editor-agent.md",
+      "commandGroup": null,
+    },
+    // You can add more agents like this:
+    // "code-reviewer": {
+    //   "ruleFilePattern": "**/*.code-reviewer.md",
+    //   "commandGroup": "reviewer",
+    //   "references": ["code-editor"],
+    // },
+    // You need to add instructions like you manually did in \`CLAUDE.md\`,
+    // and create a file like \`.claude/agents/code-reviewer.md\`.
+  },
+}
+`,
     "utf-8"
   );
 
