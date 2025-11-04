@@ -2,6 +2,11 @@
 
 set -e
 
+# Allow overriding the command via CMD environment variable
+# Usage: CMD="npx code-editor-agent" ./test.sh
+# Usage: CMD="../go/code-editor-agent" ./test.sh
+CMD="${CMD:-npx code-editor-agent}"
+
 # clean up previous test
 cleanup() {
   rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt tmp
@@ -33,60 +38,60 @@ compare_output() {
 }
 
 # 00-initial
-npx code-editor-agent cmd init
-npx code-editor-agent test.sh > output.txt
-npx code-editor-agent RENAME-ME.code-editor-agent.md >> output.txt
+$CMD cmd init
+$CMD test.sh > output.txt
+$CMD RENAME-ME.code-editor-agent.md >> output.txt
 compare_with_snapshot 00-initial
 
 # 01-ignorePatterns
 cleanup_tmp
 cp ../test-templates/01-ignorePatterns/basic.code-editor-agent.md tmp/rule.code-editor-agent.md
 rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
-npx code-editor-agent cmd init
+$CMD cmd init
 rm RENAME-ME.code-editor-agent.md
-npx code-editor-agent cmd generate
-npx code-editor-agent tmp/test-file.ts > output.txt
-npx code-editor-agent tmp/ignored.ts >> output.txt
+$CMD cmd generate
+$CMD tmp/test-file.ts > output.txt
+$CMD tmp/ignored.ts >> output.txt
 compare_output 01-ignorePatterns
 
 # 02-tags-references
 cleanup_tmp
 cp ../test-templates/02-tags-references/*.code-editor-agent.md tmp/
 rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
-npx code-editor-agent cmd init
+$CMD cmd init
 rm RENAME-ME.code-editor-agent.md
-npx code-editor-agent cmd generate
-npx code-editor-agent tmp/test-file.ts > output.txt
+$CMD cmd generate
+$CMD tmp/test-file.ts > output.txt
 compare_output 02-tags-references
 
 # 03-priority
 cleanup_tmp
 cp ../test-templates/03-priority/*.code-editor-agent.md tmp/
 rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
-npx code-editor-agent cmd init
+$CMD cmd init
 rm RENAME-ME.code-editor-agent.md
-npx code-editor-agent cmd generate
-npx code-editor-agent tmp/test-file.ts > output.txt
+$CMD cmd generate
+$CMD tmp/test-file.ts > output.txt
 compare_output 03-priority
 
 # 04-order
 cleanup_tmp
 cp ../test-templates/04-order/*.code-editor-agent.md tmp/
 rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
-npx code-editor-agent cmd init
+$CMD cmd init
 rm RENAME-ME.code-editor-agent.md
-npx code-editor-agent cmd generate
-npx code-editor-agent tmp/test-file.ts > output.txt
+$CMD cmd generate
+$CMD tmp/test-file.ts > output.txt
 compare_output 04-order
 
 # 05-combined
 cleanup_tmp
 cp ../test-templates/05-combined/*.code-editor-agent.md tmp/
 rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
-npx code-editor-agent cmd init
+$CMD cmd init
 rm RENAME-ME.code-editor-agent.md
-npx code-editor-agent cmd generate
-npx code-editor-agent tmp/test-file.ts > output.txt
+$CMD cmd generate
+$CMD tmp/test-file.ts > output.txt
 compare_output 05-combined
 
 # 06-multi-agent
@@ -94,12 +99,12 @@ cleanup_tmp
 cp ../test-templates/06-multi-agent/*.code-editor-agent.md tmp/
 cp ../test-templates/06-multi-agent/*.code-reviewer.md tmp/
 rm -rf .claude .config RENAME-ME.code-editor-agent.md output.txt
-npx code-editor-agent cmd init
+$CMD cmd init
 rm RENAME-ME.code-editor-agent.md
 cp ../test-templates/06-multi-agent/config.json .config/code-editor-agent.jsonc
-npx code-editor-agent cmd generate
-npx code-editor-agent tmp/test.ts > output.txt
-npx code-editor-agent reviewer tmp/test.ts >> output.txt
+$CMD cmd generate
+$CMD tmp/test.ts > output.txt
+$CMD reviewer tmp/test.ts >> output.txt
 compare_output 06-multi-agent
 
 echo "All tests passed."

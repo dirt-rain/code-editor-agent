@@ -1,0 +1,19 @@
+# Binaries
+code-editor-agent
+code-editor-agent-*
+*.exe
+
+# Go build cache
+*.test
+*.out
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

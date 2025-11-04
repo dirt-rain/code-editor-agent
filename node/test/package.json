@@ -2,12 +2,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "rm -rf node_modules && npm install && sh test.sh"
-  },
-  "dependencies": {
-    "code-editor-agent": "file:../dist"
-  },
-  "devDependencies": {
-    "tsx": "^4.20.6"
+    "start": "cd ../../test && npm run test:node"
   }
 }
