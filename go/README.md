@@ -9,6 +9,43 @@ This is a Go rewrite of the original Node.js `code-editor-agent` tool. It provid
 - **Cross-Platform**: Easy to build for multiple platforms
 - **Lower Memory Footprint**: More efficient resource usage
 
+## Quick Start
+
+### Installation
+
+**Option 1: Install via go install (recommended)**
+```bash
+go install github.com/dirt-rain/code-editor-agent/go@latest
+```
+
+**Option 2: Download pre-built binaries** from [releases](https://github.com/dirt-rain/code-editor-agent/releases).
+
+**Option 3: Build from source**
+```bash
+go build -o code-editor-agent .
+sudo mv code-editor-agent /usr/local/bin/
+```
+
+### Basic Setup
+
+1. Configure `.claude/settings.json`:
+   ```json
+   {
+     "permissions": {
+       "allow": ["Bash(code-editor-agent:*)"]
+     }
+   }
+   ```
+
+2. Initialize the agent:
+   ```bash
+   code-editor-agent cmd init
+   ```
+
+3. Start using the agent in Claude Code!
+
+For detailed setup instructions, see the [main README](https://github.com/dirt-rain/code-editor-agent#quick-start).
+
 ## Building
 
 ```bash
@@ -48,15 +85,6 @@ The usage is identical to the Node.js version:
 # Load rules for a file (specific agent)
 ./code-editor-agent <commandGroup> path/to/file.ts
 ```
-
-## Installation
-
-1. Build the binary (see above)
-2. Move it to your `$PATH`:
-   ```bash
-   sudo mv code-editor-agent /usr/local/bin/
-   ```
-3. Or use it directly from the build location
 
 ## Dependencies
 

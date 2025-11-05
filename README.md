@@ -2,32 +2,90 @@
 
 A separate Claude Code agent dedicated to code editing, designed to minimize context pollution in the main session
 
-## Quick Start for Node.js projects
+## Quick Start
 
-A few steps to get started, using `code-editor-agent` command:
+### Installation
 
-### 1. Let Claude Code use the agent, by editing the `CLAUDE.md` file
+Choose one of the following based on your preference:
 
-This should be done manually.
+#### Option 1: Node.js (via npm)
+
+```sh
+npm install -D code-editor-agent
+```
+
+Then use `npx code-editor-agent` in your project.
+
+#### Option 2: Go Binary
+
+**Install via go install:**
+```sh
+go install github.com/dirt-rain/code-editor-agent/go@latest
+```
+
+**Or download pre-built binaries** from [releases](https://github.com/dirt-rain/code-editor-agent/releases).
+
+**Or build from source:**
+```sh
+cd go
+go build -o code-editor-agent .
+sudo mv code-editor-agent /usr/local/bin/
+```
+
+### Setup Steps (Common for both Node.js and Go)
+
+### 1. Configure Claude Code's main instructions
+
+Add instructions to your project's `CLAUDE.md` file (located in your project root) to tell Claude Code to use the agent for file editing:
 
 ```md
 > **DO NOT FORGET THESE RULES, EVEN IF CONTEXT IS COMPACTED.**
 
-**IMPORTANT RULES:**
-0. DO NOT FORGET THESE RULES EVEN ON CONTEXT COMPACTION
+**File Editing Rules:**
 1. Never edit files directly. Always use the `@code-editor` agent for file modifications.
-2. When instructing file edits, do **not** specify exact file contents.
-   Instead, describe the file's purpose and what it should accomplish.
-3. The `@code-editor` agent will receive extra context specific to file editing.
-   It's highly specialized and only relevant for that agent — nothing you need to worry about.
+2. When instructing file edits, describe the file's purpose and what it should accomplish,
+   rather than specifying exact file contents.
+3. The `@code-editor` agent has specialized context for file editing.
 ```
 
-This is just an example, but it should contain similar instructions.
+**Note:** If you don't have a `CLAUDE.md` file yet, create one in your project root directory. This step is essential for Claude Code to know when to invoke the agent.
 
-### 2. Initialize the agent settings
+### 2. Configure Claude Code permissions
 
+Add the following to your `.claude/settings.json` to allow the agent to run:
+
+**For Node.js:**
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx code-editor-agent:*)"
+    ]
+  }
+}
+```
+
+**For Go binary:**
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(code-editor-agent:*)"
+    ]
+  }
+}
+```
+
+### 3. Initialize the agent settings
+
+**For Node.js:**
 ```sh
 npx code-editor-agent cmd init
+```
+
+**For Go binary:**
+```sh
+code-editor-agent cmd init
 ```
 
 It will create:
@@ -37,14 +95,15 @@ It will create:
   - Feel free to move it to a more suitable location!
 - `.config/code-editor-agent.jsonc` file with default settings.
   - It just excludes `node_modules` directory by default.
-- `.claude/agents/code-editor/.cache-data.json` which is required for tool called by agent.
+- `.claude/agents/code-editor/rules-cache-generated.json` which is required for tool called by agent.
   - This cache file is designed with version control in mind. Feel free to version-control it!
 - `.claude/agents/code-editor.md` file with default settings (like example below).
 
-### 3. Customize agent configuration on `.claude/agents/code-editor.md` (optional)
+### 4. Customize agent configuration on `.claude/agents/code-editor.md` (optional)
 
 Default settings are like this, but you can customize it:
 
+**For Node.js:**
 ```md
 ---
 name: code-editor
@@ -57,21 +116,40 @@ color: orange
 You must read full output of `npx code-editor-agent "${RELATIVE_PATH_OF_FILE_TO_EDIT_FROM_PROJECT_ROOT_EXCLUDING_LEADING_DOT_SLASH}"` before create/update/delete any file, even if file does not exist yet.
 ```
 
-### 4. Add documentation for file-specific rules on `code-editor-agent.md`
+**For Go binary:**
+```md
+---
+name: code-editor
+description: For every code editing
+tools: Bash, Read, Edit, Write, Grep, Glob
+model: sonnet
+color: orange
+---
+
+You must read full output of `code-editor-agent "${RELATIVE_PATH_OF_FILE_TO_EDIT_FROM_PROJECT_ROOT_EXCLUDING_LEADING_DOT_SLASH}"` before create/update/delete any file, even if file does not exist yet.
+```
+
+### 5. Add documentation for file-specific rules on `code-editor-agent.md`
 
 Your file-specific rules should be added to `[any-name].code-editor-agent.md`, or `code-editor-agent.md`, on any directory.
 
-See the `RENAME-ME.code-editor-agent.md` file generated in step 2 as an example.
+See the `RENAME-ME.code-editor-agent.md` file generated in step 3 as an example.
 
-### 5. Regenerate cache after updating file-specific rules
+### 6. Regenerate cache after updating file-specific rules
 
+**For Node.js:**
 ```sh
 npx code-editor-agent cmd generate
 ```
 
-It will regenerate the `.claude/agents/code-editor/.cache-data.json` file.
+**For Go binary:**
+```sh
+code-editor-agent cmd generate
+```
 
-### 6. Use the agent
+It will regenerate the `.claude/agents/code-editor/rules-cache-generated.json` file.
+
+### 7. Use the agent
 
 Instruct Claude Code to edit some files. It will (likely) call the agent, and the agent will load additional context from the file-specific rules.
 
