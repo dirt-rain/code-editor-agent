@@ -1,0 +1,38 @@
+{
+  "name": "code-editor-agent-mcp",
+  "version": "0.1.0",
+  "description": "MCP server wrapper for code-editor-agent CLI",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "code-editor-agent-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "mcp": "node dist/index.js",
+    "test:start": "node dist/index.js",
+    "test:inspector": "npx @modelcontextprotocol/inspector node dist/index.js",
+    "test:manual": "node test-manual.js"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "code-editor-agent",
+    "claude"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

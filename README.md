@@ -254,6 +254,51 @@ You must read full output of `npx code-editor-agent reviewer "${FILE_PATH}"` bef
 
 **Note:** The CLI uses the commandGroup ("reviewer"), not the agent name ("code-reviewer").
 
+## MCP Server (Model Context Protocol)
+
+An MCP server wrapper is available for using code-editor-agent with Claude Desktop and other MCP clients. This allows you to use code-editor-agent functionality through MCP tools instead of the CLI.
+
+### Quick Start with MCP
+
+1. **Install the MCP server:**
+
+   ```bash
+   cd mcp
+   npm install
+   npm run build
+   ```
+
+2. **Configure Claude Desktop:**
+
+   Add to your `claude_desktop_config.json`:
+
+   **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+
+   ```json
+   {
+     "mcpServers": {
+       "code-editor-agent": {
+         "command": "node",
+         "args": ["/absolute/path/to/code-editor-agent/mcp/dist/index.js"]
+       }
+     }
+   }
+   ```
+
+3. **Restart Claude Desktop** and you'll see the code-editor-agent tools available!
+
+### Available MCP Tools
+
+- `code_editor_agent_init` - Initialize configuration
+- `code_editor_agent_generate` - Generate/regenerate rule cache
+- `code_editor_agent_load` - Load rules for a specific file
+- `code_editor_agent_list_config` - Show configuration
+
+### Learn More
+
+See [mcp/README.md](mcp/README.md) for detailed MCP server documentation.
+
 ## Development and Contributing
 
 PRs are welcome! Please feel free to submit any issues or feature requests.
